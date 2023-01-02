@@ -43,10 +43,6 @@ def run_gui(wait_fn, read_fn):
         elif event == THREAD_EVENT:
             samples = read_fn()
             for e in samples:
-                e = reader.take_one()
-                assert(isinstance(e, EntityPosition))
-                si = e.sample_info
-                assert(isinstance(si, cyclonedds.internal.SampleInfo))
                 print(e.sample_info)
                 graph.RelocateFigure(circle, int(e.x), int(e.y))
 
