@@ -1,17 +1,15 @@
 cmake_minimum_required(VERSION 3.23)
 project(dds-testing LANGUAGES C)
 
-find_package(CycloneDDS REQUIRED)
+# Build all executables and libraries into the top-level /bin and /lib folders.
+# This matches how cyclonedds is setup.
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin")
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
+set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
 
-add_executable(publisher src/publisher.c)
+# Dependencies managed via vcpkg
+find_package(check CONFIG REQUIRED)
 
-idlc_generate(TARGET vehicle_lib FILES idl/vehicle.idl WARNINGS no-implicit-extensibility)
-
-target_link_libraries(publisher PRIVATE CycloneDDS::ddsc vehicle_lib)
-
-install(
-  TARGETS publisher
-  EXPORT "${PROJECT_NAME}"
-  RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}" COMPONENT publisher
-  LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}" COMPONENT publisher
-  ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}" COMPONENT publisher)
+add_subdirectory(3rdparty/CycloneDDS)
+add_subdirectory(src)
+add_subdirectory(test)

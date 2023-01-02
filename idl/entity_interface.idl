@@ -1,0 +1,9 @@
+module entities 
+{
+    struct EntityPosition
+    {
+        @key int32 id;
+        float x;
+        float y;
+    };
+};
